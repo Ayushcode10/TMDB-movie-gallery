@@ -1,0 +1,32 @@
+.movie-details {
+  display: flex;
+  padding: 20px;
+  gap: 40px;
+  max-width: 900px;
+  margin: 40px auto;
+  background: #000000;
+  border-radius: 12px;
+}
+
+.poster-section img {
+  border-radius: 12px;
+  max-width: 300px;
+  width: 100%;
+}
+
+.details-section {
+  flex-grow: 1;
+}
+
+.details-section h1 {
+  margin-bottom: 10px;
+}
+
+.cast-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.cast-list li {
+  margin-bottom: 6px;
+}
