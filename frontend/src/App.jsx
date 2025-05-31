@@ -1,21 +1,39 @@
 import "./css/App.css";
-import Favorites from "./pages/Favorites";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import Home from "./pages/Home";
-import { Routes, Route } from "react-router-dom";
-import { MovieProvider } from "./contexts/MovieContext";
+import Favorites from "./pages/Favorites";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
 import NavBar from "./components/NavBar";
+import { MovieProvider } from "./contexts/MovieContext";
+import { useEffect, useState } from "react";
+import MovieDetails from "./pages/MovieDetails";
 
 function App() {
+  const location = useLocation();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    setIsLoggedIn(!!user);
+  }, []);
+
+  const hideNavBar = location.pathname === "/login" || location.pathname === "/signup";
+
   return (
     <MovieProvider>
-      <NavBar />
+      {!hideNavBar && <NavBar />}
       <main className="main-content">
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/favorites" element={<Favorites />} />
+          <Route path="/" element={isLoggedIn ? <Home /> : <Navigate to="/login" />} />
+          <Route path="/favorites" element={isLoggedIn ? <Favorites /> : <Navigate to="/login" />} />
+          <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/movie/:id" element={isLoggedIn ? <MovieDetails /> : <Navigate to="/login" />}/>
         </Routes>
       </main>
     </MovieProvider>
+
   );
 }
 

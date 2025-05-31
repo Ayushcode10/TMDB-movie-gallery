@@ -5,4 +5,21 @@
   width: 100%;
   display: flex;
   flex-direction: column;
+
+  
+}
+
+/* in index.css or App.css */
+.auth-container {
+  max-width: 300px;
+  margin: 100px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.auth-container input,
+.auth-container button {
+  padding: 10px;
+  font-size: 16px;
 }
