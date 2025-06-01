@@ -7,17 +7,37 @@ function Login() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-    const storedUser = JSON.parse(localStorage.getItem("user"));
 
-    if (storedUser && storedUser.email === email && storedUser.password === password) {
-      localStorage.setItem("loggedInUser", JSON.stringify(storedUser));
-      navigate("/");
-    } else {
-      alert("Invalid email or password");
-    }
-  };
+  const handleLogin = () => {
+  const existingUsers = JSON.parse(localStorage.getItem("users")) || [];
+  const user = existingUsers.find(u => u.username === username && u.password === password);
+
+  if (!user) {
+    alert("Invalid credentials");
+    return;
+  }
+  localStorage.setItem("user", JSON.stringify(user));
+  setIsLoggedIn(true);
+  navigate("/");
+  // const handleLogin = () => {
+  // // logic to check credentials
+  // localStorage.setItem("user", JSON.stringify({ username }));
+  // setIsLoggedIn(true); // ✅ update app state
+  // navigate("/"); // redirect after login
+  
+};
+
+  // const handleLogin = (e) => {
+  //   e.preventDefault();
+  //   const storedUser = JSON.parse(localStorage.getItem("user"));
+
+  //   if (storedUser && storedUser.email === email && storedUser.password === password) {
+  //     localStorage.setItem("loggedInUser", JSON.stringify(storedUser));
+  //     navigate("/");
+  //   } else {
+  //     alert("Invalid email or password");
+  //   }
+  // };
 
   return (
     <div className="auth-container">
