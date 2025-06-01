@@ -7,14 +7,32 @@ function Signup() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const handleSignup = (e) => {
-    e.preventDefault();
+  // const handleSignup = (e) => {
+  //   e.preventDefault();
 
-    const user = { email, password };
-    localStorage.setItem("user", JSON.stringify(user));
-    localStorage.setItem("loggedInUser", JSON.stringify(user));
-    navigate("/");
-  };
+  //   const user = { email, password };
+  //   localStorage.setItem("user", JSON.stringify(user));
+  //   localStorage.setItem("loggedInUser", JSON.stringify(user));
+  //   navigate("/");
+  // };
+  const handleSignup = () => {
+  const newUser = { username, password };
+  const existingUsers = JSON.parse(localStorage.getItem("users")) || [];
+
+  // Check if username already exists
+  const alreadyExists = existingUsers.find(u => u.username === username);
+  if (alreadyExists) {
+    alert("Username already taken");
+    return;
+  }
+
+  // Save the new user
+  const updatedUsers = [...existingUsers, newUser];
+  localStorage.setItem("users", JSON.stringify(updatedUsers));
+
+  navigate("/login");
+};
+
 
   return (
     <div className="auth-container">
