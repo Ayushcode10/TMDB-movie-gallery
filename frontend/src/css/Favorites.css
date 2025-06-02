@@ -1,8 +1,8 @@
-
 .favorites {
   padding: 2rem;
   width: 100%;
   box-sizing: border-box;
+  min-height: calc(100vh - 80px);
 }
 
 .favorites h2 {
@@ -11,42 +11,146 @@
   font-size: 2.5rem;
   color: #ffffff;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .favorites-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   text-align: center;
   padding: 4rem 2rem;
-  background-color: rgba(255, 255, 255, 0.05);
-  border-radius: 12px;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+  border-radius: 20px;
   margin: 2rem auto;
   max-width: 600px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.empty-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  opacity: 0.7;
 }
 
 .favorites-empty h2 {
   margin-bottom: 1rem;
   font-size: 2rem;
-  color: #e50914;
+  color: #667eea;
+  text-shadow: none;
+  background: none;
+  -webkit-text-fill-color: initial;
 }
 
 .favorites-empty p {
-  color: #999;
-  font-size: 1.2rem;
+  color: #ccc;
+  font-size: 1.1rem;
   line-height: 1.6;
+  margin-bottom: 0.5rem;
 }
 
+.favorites-empty p:last-child {
+  color: #999;
+  font-size: 1rem;
+  font-style: italic;
+}
 
-/* Animation for new favorites being added */
+/* Movies grid from Home.css but with fade-in animation */
+.movies-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  padding: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Animation for favorites being added/removed */
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(20px) scale(0.9);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
   }
 }
 
-.movies-grid > * {
-  animation: fadeIn 0.3s ease-out forwards;
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+}
+
+.movies-grid .movie-card {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .favorites {
+    padding: 1rem;
+  }
+
+  .favorites h2 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .favorites-empty {
+    padding: 3rem 1.5rem;
+    margin: 1rem auto;
+  }
+
+  .empty-icon {
+    font-size: 3rem;
+  }
+
+  .favorites-empty h2 {
+    font-size: 1.8rem;
+  }
+
+  .favorites-empty p {
+    font-size: 1rem;
+  }
+
+  .movies-grid {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    padding: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .favorites h2 {
+    font-size: 1.8rem;
+  }
+
+  .favorites-empty {
+    padding: 2rem 1rem;
+  }
+
+  .empty-icon {
+    font-size: 2.5rem;
+  }
+
+  .favorites-empty h2 {
+    font-size: 1.5rem;
+  }
+
+  .movies-grid {
+    grid-template-columns: 1fr;
+  }
 }

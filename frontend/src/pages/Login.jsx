@@ -1,67 +1,87 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import "../../src/css/Auth.css"; // Create this or style inline
+import "../css/Auth.css";
 
-function Login() {
+function Login({ setIsLoggedIn }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
+  const handleLogin = (e) => {
+    e.preventDefault();
+    setError("");
 
-  const handleLogin = () => {
-  const existingUsers = JSON.parse(localStorage.getItem("users")) || [];
-  const user = existingUsers.find(u => u.username === username && u.password === password);
+    if (!email || !password) {
+      setError("Please fill in all fields");
+      return;
+    }
 
-  if (!user) {
-    alert("Invalid credentials");
-    return;
-  }
-  localStorage.setItem("user", JSON.stringify(user));
-  setIsLoggedIn(true);
-  navigate("/");
-  // const handleLogin = () => {
-  // // logic to check credentials
-  // localStorage.setItem("user", JSON.stringify({ username }));
-  // setIsLoggedIn(true); // ✅ update app state
-  // navigate("/"); // redirect after login
-  
-};
+    // Get existing users from localStorage
+    const existingUsers = JSON.parse(localStorage.getItem("users")) || [];
+    
+    // Find user with matching credentials
+    const user = existingUsers.find(
+      u => u.email === email && u.password === password
+    );
 
-  // const handleLogin = (e) => {
-  //   e.preventDefault();
-  //   const storedUser = JSON.parse(localStorage.getItem("user"));
-
-  //   if (storedUser && storedUser.email === email && storedUser.password === password) {
-  //     localStorage.setItem("loggedInUser", JSON.stringify(storedUser));
-  //     navigate("/");
-  //   } else {
-  //     alert("Invalid email or password");
-  //   }
-  // };
+    if (user) {
+      // Store logged in user info
+      localStorage.setItem("loggedInUser", JSON.stringify(user));
+      setIsLoggedIn(true);
+      navigate("/");
+    } else {
+      setError("Invalid email or password");
+    }
+  };
 
   return (
-    <div className="auth-container">
-      <h2>Login</h2>
-      <form onSubmit={handleLogin} className="auth-form">
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          required
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          required
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button type="submit">Login</button>
-        <p>
-          Don't have an account? <Link to="/signup">Sign up here</Link>
-        </p>
-      </form>
+    <div className="auth-wrapper">
+      <div className="auth-container">
+        <div className="auth-header">
+          <h2>Welcome Back</h2>
+          <p>Sign in to your account</p>
+        </div>
+        
+        <form onSubmit={handleLogin} className="auth-form">
+          {error && <div className="error-message">{error}</div>}
+          
+          <div className="input-group">
+            <input
+              type="email"
+              placeholder="Email address"
+              value={email}
+              required
+              onChange={(e) => setEmail(e.target.value)}
+              className="auth-input"
+            />
+          </div>
+          
+          <div className="input-group">
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              required
+              onChange={(e) => setPassword(e.target.value)}
+              className="auth-input"
+            />
+          </div>
+          
+          <button type="submit" className="auth-button">
+            Sign In
+          </button>
+          
+          <div className="auth-footer">
+            <p>
+              Don't have an account?{" "}
+              <Link to="/signup" className="auth-link">
+                Create one here
+              </Link>
+            </p>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }
